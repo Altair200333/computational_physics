@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <functional>
 #include <iostream>
+#include "subnormal.h"
 
 template<typename T>
 struct EpsilonSearchResult
@@ -28,20 +29,23 @@ EpsilonSearchResult<T> findMachineEpsilon(T left, T right, std::function<bool(T)
 
     uint32_t searchSteps = 0;
 
-    while (left <= right && !epsilonCondition(epsilon))
+    while (left <= right)
     {
+    	if(epsilonCondition(epsilon) && !isSubnormal(epsilon))
+            break;
+    	
         searchSteps++;
 
-        //немного не достали, сдвинем левую границу
-        if ((static_cast<T>(1.0) + epsilon * static_cast<T>(0.5)) < static_cast<T>(1.0))
-        {
-            left = epsilon;
-        }
-        else//перебор, двигай правую стенку
+        const bool halfEpsilonIsOne = (static_cast<T>(1.0) + epsilon * static_cast<T>(0.5)) == static_cast<T>(1.0);
+        
+        if (!halfEpsilonIsOne)//слишком много
         {
             right = epsilon;
         }
-
+        else if(halfEpsilonIsOne || isSubnormal(epsilon))//малое число
+        {
+            left = epsilon;
+        }
         //в любом случае пытайся найти eps посередине
         epsilon = (left + right) * static_cast<T>(0.5);
     }
