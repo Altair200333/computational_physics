@@ -29,23 +29,24 @@ EpsilonSearchResult<T> findMachineEpsilon(T left, T right, std::function<bool(T)
 
     uint32_t searchSteps = 0;
 
-    while (left <= right)
+    while (true)
     {
-    	if(epsilonCondition(epsilon) && !isSubnormal(epsilon))
+        if (left == epsilon || right == epsilon)
             break;
-    	
+
         searchSteps++;
 
         const bool halfEpsilonIsOne = (static_cast<T>(1.0) + epsilon * static_cast<T>(0.5)) == static_cast<T>(1.0);
-        
-        if (!halfEpsilonIsOne)//слишком много
-        {
-            right = epsilon;
-        }
-        else if(halfEpsilonIsOne || isSubnormal(epsilon))//малое число
+
+        if (halfEpsilonIsOne || isSubnormal(epsilon))//малое число
         {
             left = epsilon;
         }
+        else if (!halfEpsilonIsOne)//слишком много
+        {
+            right = epsilon;
+        }
+       
         //в любом случае пытайся найти eps посередине
         epsilon = (left + right) * static_cast<T>(0.5);
     }
