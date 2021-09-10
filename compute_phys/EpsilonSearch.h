@@ -78,7 +78,11 @@ void findEpsilonAndCompare()
     	{static_cast<T>(1.0) + eps.eps,                                 "1 + e      "},
     	{static_cast<T>(1.0) + eps.eps + eps.eps * static_cast<T>(0.5), "1 + e + e/2"},
     };
-	
+    for (int i = 0; i < 4; ++i)
+    {
+        std::cout << values[i].name << "-- ";
+        std::cout << std::fixed << std::setprecision(std::numeric_limits<T>::max_digits10) << values[i].value << "\n";
+    }
 	for (int i=0;i<4;++i)
 	{
         std::cout << values[i].name << "-- ";

@@ -39,11 +39,11 @@ int maxExp10()
     T previous = static_cast<T>(0);
     while (true)
     {
-        T value = static_cast<T>(pow(static_cast<T>(10), static_cast<T>(maxPow)));
+        T value = static_cast<T>(pow(static_cast<T>(2), static_cast<T>(maxPow)));
 
     	//перед тем как выйти, без последней проверки value дважды вылетит в inf
         if (value <= previous || isinf(value))
-            return maxPow - 1;
+            return maxPow;
         previous = value;
         ++maxPow;
     }
@@ -56,7 +56,7 @@ int minExp10()
     T previous = static_cast<T>(1);
     while (true)
     {
-        T value = static_cast<T>(pow(static_cast<T>(10), static_cast<T>(minPow)));
+        T value = static_cast<T>(pow(static_cast<T>(2), static_cast<T>(minPow)));
     	
         if (value >= previous || (value <= std::numeric_limits<T>::min()))
             return minPow + 1;
@@ -69,6 +69,6 @@ template<typename T>
 void printPrecisions()
 {
     std::cout << "Mantissa decimal places: "<< getMantissaPrecision<T>() << "\n";
-    std::cout << "Max10 power: "<< maxExp10<T>()<<"; expected: "<< std::numeric_limits<T>::max_exponent10 << "\n";
-    std::cout << "Min10 power: "<< minExp10<T>()<<"; expected: "<< std::numeric_limits<T>::min_exponent10 << "\n";
+    std::cout << "Max power: "<< maxExp10<T>()<<"; expected: "<< std::numeric_limits<T>::max_exponent << "\n";
+    std::cout << "Min power: "<< minExp10<T>()<<"; expected: "<< std::numeric_limits<T>::min_exponent << "\n";
 }
