@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include <iostream>
+#include "subnormal.h"
 
 typedef union
 {
@@ -58,8 +59,8 @@ int minExp10()
     {
         T value = static_cast<T>(pow(static_cast<T>(2), static_cast<T>(minPow)));
     	
-        if (value >= previous || (value <= std::numeric_limits<T>::min()))
-            return minPow + 1;
+        if (value >= previous || isSubnormal(value))
+            return minPow + 2;
     	
         previous = value;
         --minPow;
